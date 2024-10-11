@@ -1,124 +1,102 @@
-# LawGPT Model Documentation
+# Deepfake Detection Pipeline
 
-## Overview
-This repository provides a comprehensive overview of the LawGPT model implementation, focusing on legal document analysis using the MiniLM-L6-v2 architecture. The model is designed for efficiency, offering a constant response time of 2 seconds, despite being trained on limited datasets.
-
-## Table of Contents
-- [Overview](#overview)
-- [Introduction](#introduction)
-- [Installation](#installation)
-  - [Step 1: Install Dependencies](#step-1-install-dependencies)
-  - [Step 2: Upload .pkl Files](#step-2-upload-pkl-files)
-  - [Step 3: Import Libraries](#step-3-import-libraries)
-  - [Step 4: Mount Google Drive](#step-4-mount-google-drive)
-- [Code Explanation](#code-explanation)
-  - [Step 1: Install Dependencies](#step-1-install-dependencies-1)
-  - [Step 2: Import Libraries](#step-2-import-libraries)
-  - [Step 3: Mount Google Drive](#step-3-mount-google-drive)
-  - [Step 4: Load Model and Tokenizer](#step-4-load-model-and-tokenizer)
-  - [Step 5: Define Helper Functions](#step-5-define-helper-functions)
-  - [Step 6: Process PDF and Perform Inference](#step-6-process-pdf-and-perform-inference)
-- [Performance Metrics](#performance-metrics)
-- [Limitations](#limitations)
-- [Conclusion](#conclusion)
-- [Credits](#credits)
+**Credits**: Harsh Chinchakar - harshchinchakar33@gmail.com
 
 ## Introduction
+This model pipeline allows users to interact with multiple deepfake detection models. The interface is designed to provide a user-friendly experience where users can upload videos, select from a range of pre-trained models, and receive outputs that indicate the presence of deepfakes. This tool is particularly useful for researchers, AI experts, and financial companies aiming to integrate deepfake detection capabilities into their workflows.
 
-The LawGPT model is tailored for classifying legal documents, utilizing the MiniLM-L6-v2 architecture from the transformers library. It is optimized for real-time applications with a consistent response time of 2 seconds.
+## Table of Contents
+- [Pipeline Architecture](#pipeline-architecture)
+- [In-Depth Pipeline Explanation](#in-depth-pipeline-explanation)
+  - [1. Gradio Interface](#1-gradio-interface)
+  - [2. Model and File Extension Check](#2-model-and-file-extension-check)
+  - [3. Handlers (Audio, Video, Image)](#3-handlers-audio-video-image)
+  - [4. Model Classifiers](#4-model-classifiers)
+  - [5. Returning Prediction and Confidence Score](#5-returning-prediction-and-confidence-score)
+  - [6. Error Handling and Feedback](#6-error-handling-and-feedback)
+  - [7. Model Integration and Scalability](#7-model-integration-and-scalability)
+  - [8. Logging and Monitoring](#8-logging-and-monitoring)
+  - [9. Future Improvements](#9-future-improvements)
+- [Summary of the Deepfake Detection Pipeline](#summary-of-the-deepfake-detection-pipeline)
 
-## Installation
+## Pipeline Architecture
+The pipeline architecture for the deepfake detection system integrates several key components to ensure accurate and efficient classification of media files. It begins with a Gradio interface that allows users to upload files and select the appropriate model based on the file type, facilitating user interaction and model selection. The system then performs a model and file extension check to ensure compatibility between the uploaded media and the chosen classifier. Media-specific handlers preprocess the files, preparing them for analysis by specialized model classifiers trained for audio, video, or image data. The classifiers detect deepfakes and provide predictions along with confidence scores, which are then presented to the user. Robust error handling and feedback mechanisms ensure reliability and guide users in case of issues. The pipeline is designed for scalability, allowing for easy integration of new models, and is supported by logging and monitoring to track performance and detect issues.
 
-To set up the environment for running the LawGPT model, follow these steps:
+## In-Depth Pipeline Explanation
 
-### Step 1: Install Dependencies
+### 1. Gradio Interface
+**Purpose**: The Gradio interface provides a user-friendly way to interact with the deepfake detection models. Users can upload their files (videos, images, or audio) and choose the appropriate model for classification.
 
-Install the necessary libraries using the following command:
+**Key Points**:
+- The `classify` function determines the type of file uploaded and routes it to the appropriate handler and model.
+- The Gradio interface (`iface`) connects the `classify` function with user inputs (file upload and model choice) and outputs the prediction and confidence.
 
-```bash
-pip install transformers PyPDF2
-```
+### 2. Model and File Extension Check
+**Purpose**: Ensures that the correct model is applied based on the file type to prevent errors or incorrect classifications.
 
-- `transformers`: For the model and tokenizer.
-- `PyPDF2`: For handling PDF files.
+**Key Points**:
+- The function ensures that the user’s file and model choice are compatible.
+- If the file format is unsupported, the function returns an error message to inform the user.
 
-### Step 2: Upload .pkl Files
+### 3. Handlers (Audio, Video, Image)
+**Purpose**: Handlers manage the preprocessing tasks for different media files, ensuring that they are correctly formatted for the model.
 
-Before running the model, make sure to upload the required `.pkl` files that contain the model's weights and configurations.
+**Key Points**:
+- Audio Handler: Prepares audio files by extracting features or segments.
+- Video Handler: Prepares video files by extracting frames or sequences.
+- Image Handler: Prepares image files by resizing and normalizing them.
 
-### Step 3: Import Libraries
+### 4. Model Classifiers
+**Purpose**: Classifiers detect deepfakes using pre-trained models specialized for different media types.
 
-Import the necessary modules:
+**Key Points**:
+- Audio Classifier: Detects anomalies in audio files.
+- Video Classifier: Uses models like LSTM or EfficientNet for video analysis.
+- Image Classifier: Uses models like ResNet18 or ViT for image classification.
 
-```python
-from transformers import AutoTokenizer, AutoModelForSequenceClassification, pipeline
-from PyPDF2 import PdfReader
-```
+### 5. Returning Prediction and Confidence Score
+**Purpose**: Provides the user with a clear classification (deepfake or real) and a confidence score.
 
-### Step 4: Mount Google Drive
+**Key Points**:
+- Prediction indicates whether the input is a deepfake.
+- Confidence Score helps users understand the model’s certainty about its prediction.
 
-To access files stored in Google Drive, use:
+### 6. Error Handling and Feedback
+**Purpose**: Ensures robustness in the pipeline by capturing issues during processing and providing feedback to users.
 
-```python
-from google.colab import drive
-drive.mount('/content/drive')
-```
+**Key Points**:
+- Uses try-except blocks to capture exceptions and prevent crashes.
+- Errors are communicated back to the user clearly.
 
-This will allow you to load datasets and models stored in the cloud.
+### 7. Model Integration and Scalability
+**Purpose**: The system is designed to integrate multiple models and allows for easy addition of new models.
 
-## Code Explanation
+**Key Points**:
+- Modular Design: Allows for easy integration of new models.
+- Model Addition: New models can be added by defining handlers and classifiers and integrating them into the main function.
 
-### Step 1: Install Dependencies
+### 8. Logging and Monitoring
+**Purpose**: Tracks the system’s performance and detects issues, ensuring reliability over time.
 
-Install essential libraries using pip:
+**Key Points**:
+- Logs key events, errors, and performance metrics.
+- Continuous monitoring helps maintain system efficiency.
 
-- `transformers`: Provides tools for NLP.
-- `PyPDF2`: Used for extracting text from PDF files.
+### 9. Future Improvements
+**Purpose**: Plans for enhancing the system to improve user experience and model accuracy.
 
-### Step 2: Import Libraries
+**Potential Improvements**:
+- **Improved Model Accuracy**: Using larger and more diverse datasets for training.
+- **Real-Time Processing**: Handling real-time video and audio streams.
+- **User Interface Enhancements**: Adding features like drag-and-drop file uploads.
 
-Import required modules from the installed libraries:
-
-- `AutoTokenizer` and `AutoModelForSequenceClassification` from `transformers`.
-- `PdfReader` from `PyPDF2`.
-
-### Step 3: Mount Google Drive
-
-Mounting Google Drive gives access to datasets and models stored in the cloud.
-
-### Step 4: Load Model and Tokenizer
-
-Initialize the tokenizer and model:
-
-```python
-tokenizer = AutoTokenizer.from_pretrained("microsoft/MiniLM-L6-v2")
-model = AutoModelForSequenceClassification.from_pretrained("microsoft/MiniLM-L6-v2")
-```
-
-### Step 5: Define Helper Functions
-
-Create functions to preprocess data, perform inference, and post-process the results.
-
-### Step 6: Process PDF and Perform Inference
-
-Read a PDF, extract its content, and classify the text using the loaded model.
-
-## Performance Metrics
-
-The LawGPT model achieves a consistent response time of 2 seconds per query, ensuring efficient processing of legal documents.
-
-## Limitations
-
-- **Datasets**: The model has been trained and validated on a limited dataset, which may affect its generalizability.
-- **Scope**: It is specifically designed for legal document classification and may not perform optimally with other types of text.
-
-## Conclusion
-
-LawGPT leverages the MiniLM-L6-v2 architecture to provide fast and efficient legal document analysis. Future improvements could include expanding the dataset and refining the model's capabilities.
-
-## Credits
-
-Developed by Harsh Chinchakar under DeepCytes 2024. For questions or contributions, feel free to reach out: [harshchinchakar33@gmail.com](mailto:harshchinchakar33@gmail.com).
-
-All credits and ownership stay with Harsh Chinchakar.
-
+## Summary of the Deepfake Detection Pipeline
+1. **Gradio Interface**: Provides an easy-to-use interface for users to upload files and select models.
+2. **Model and File Extension Check**: Ensures compatibility between the uploaded file and the selected model.
+3. **Handlers (Audio, Video, Image)**: Preprocesses the media files, preparing them for the classification models.
+4. **Model Classifiers**: Specialized models for detecting deepfakes in audio, video, and image files.
+5. **Returning Prediction and Confidence Score**: Provides the user with a clear prediction and confidence level.
+6. **Error Handling and Feedback**: Captures and handles errors gracefully, providing feedback to the user.
+7. **Model Integration and Scalability**: Designed for easy integration of new models and scalability.
+8. **Logging and Monitoring**: Tracks system performance and errors for ongoing reliability and debugging.
+9. **Future Improvements**: Plans for enhancing model accuracy, real-time processing, and user interface.
