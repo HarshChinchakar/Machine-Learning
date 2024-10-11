@@ -1,5 +1,5 @@
 #LawGPT Model
-This repository provides a comprehensive overview of the LawGPT model implementation, focusing on legal document analysis using the MiniLM-L6-v2 architecture. The model is designed for efficiency, offering a constant response time of 2 seconds, despite being trained on limited datasets.
+	This repository provides a comprehensive overview of the LawGPT model implementation, focusing on legal document analysis using the MiniLM-L6-v2 architecture. The model is designed for efficiency, offering a constant response time of 2 seconds, despite being trained on limited datasets.
 
 Table of Contents
 Introduction
