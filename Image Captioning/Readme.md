@@ -1,6 +1,7 @@
 # Image Captioning System Using ResNet-50 and LSTM
 
 ## Table of Contents
+- [Credits](#Credits)
 - [Introduction](#introduction)
 - [System Overview](#system-overview)
 - [Model Architecture](#model-architecture)
@@ -12,6 +13,10 @@
 - [Future Scope](#future-scope)
 - [Conclusion](#conclusion)
 - [References](#references)
+
+## Credits
+Author - Harsh Chinchakar (harshchinchakar33@gmail.com)
+
 
 ## Introduction
 
