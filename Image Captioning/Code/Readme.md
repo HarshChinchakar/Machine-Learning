@@ -34,9 +34,6 @@ The image captioning model is designed as follows:
 ## Code Overview
 Here is a step-by-step breakdown of the core code:
 
-### 1. Feature Extraction using ResNet-50
-The ResNet-50 model is used to extract features from images. The model is pre-trained and modified to output a rich representation of image features.
-
 ```python
 # Feature extraction using ResNet-50
 from keras.applications.resnet50 import ResNet50
@@ -45,3 +42,38 @@ from keras.models import Model
 # Load ResNet50 model pre-trained on ImageNet
 base_model = ResNet50(weights='imagenet')
 model = Model(inputs=base_model.input, outputs=base_model.layers[-2].output)
+
+from keras.layers import Input, LSTM, Embedding, Dense
+
+# Define the LSTM model architecture
+input_image_features = Input(shape=(2048,))
+input_text = Input(shape=(max_length,))
+embedding_layer = Embedding(vocab_size, embedding_dim)(input_text)
+lstm_layer = LSTM(256)(embedding_layer)
+output_layer = Dense(vocab_size, activation='softmax')(lstm_layer)
+
+# Combine image features and LSTM output
+caption_model = Model(inputs=[input_image_features, input_text], outputs=output_layer)
+caption_model.compile(loss='categorical_crossentropy', optimizer='adam')
+
+from keras.layers import Add, Activation, RepeatVector
+
+# Attention mechanism for focusing on parts of the image
+attention = Add()([image_features, lstm_output])
+attention = Activation('softmax')(attention)
+context = RepeatVector(max_length)(attention)
+
+# Train the model with training images and their captions
+caption_model.fit([train_image_features, train_captions], train_targets, epochs=20, batch_size=64, validation_split=0.2)
+
+# Generate caption for a given image
+def generate_caption(image):
+    features = extract_features(image)
+    input_sequence = [start_token]
+    for _ in range(max_length):
+        prediction = caption_model.predict([features, input_sequence])
+        next_word = decode_prediction(prediction)
+        input_sequence.append(next_word)
+        if next_word == end_token:
+            break
+    return ' '.join(input_sequence)
