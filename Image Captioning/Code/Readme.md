@@ -77,3 +77,18 @@ def generate_caption(image):
         if next_word == end_token:
             break
     return ' '.join(input_sequence)
+
+## Results
+- **Evaluation Metrics**: The model is evaluated using BLEU scores (BLEU-1, BLEU-2, BLEU-3, BLEU-4), which measure the accuracy of generated captions.
+- **Performance**: The model achieves competitive results, with a BLEU score of 0.672 for BLEU-1 using the COCO 2017 dataset.
+
+## Future Scope
+- **Integrating IoT**: Using smart eyewear with the captioning model for real-time assistance to visually impaired individuals.
+- **Model Optimization**: Improving model efficiency for deployment on edge devices.
+- **Dataset Expansion**: Including more diverse datasets to improve model robustness.
+
+## How to Run the Project
+1. Clone the repository and navigate to the project directory.
+2. Install the required dependencies:
+   ```bash
+   pip install -r requirements.txt
