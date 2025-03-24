@@ -1,4 +1,4 @@
-4. AI-Based Automated Resume Screening & Interview Scheduling System
+AI-Based Automated Resume Screening & Interview Scheduling System
 Problem Statement:
 HR teams receive thousands of resumes, making manual screening inefficient. There’s a need for an AI-driven system to screen resumes, match candidates to job descriptions, and schedule interviews.
 
