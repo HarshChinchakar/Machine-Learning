@@ -12,15 +12,16 @@ This repository contains scripts and models for **intent classification** and **
 The repository provides all scripts required for **training, fine-tuning, and inference**, along with model checkpoints and tokenizers.
 
 ---
-
+'''
 ## Repository Structure
-├── Finetuned Model/ # Folder containing all trained and fine-tuned models
-│ ├── MultiThreadModel/ # Multi-head classifier for HR intent, task, and slot prediction
-│ └── finetuned_intent_model/ # Single-head classifier for intent prediction
-├── Dataset/ # CSV files for training and testing
-├── scripts/ # Python scripts for data processing, training, and inference
-├── .gitignore # Git ignore rules for sensitive and large files
-└── README.md # Project documentation
+
+├── Finetuned Model/ # Folder containing all trained and fine-tuned models  
+│ ├── MultiThreadModel/ # Multi-head classifier for HR intent, task, and slot prediction  
+│ └── finetuned_intent_model/ # Single-head classifier for intent prediction  
+├── Dataset/ # CSV files for training and testing  
+├── scripts/ # Python scripts for data processing, training, and inference  
+├── .gitignore # Git ignore rules for sensitive and large files  
+└── README.md # Project documentation  
 
 
 ---
