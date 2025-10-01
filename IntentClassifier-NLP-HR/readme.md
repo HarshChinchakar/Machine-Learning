@@ -12,7 +12,7 @@ This repository contains scripts and models for **intent classification** and **
 The repository provides all scripts required for **training, fine-tuning, and inference**, along with model checkpoints and tokenizers.
 
 ---
-'''
+
 ## Repository Structure
 
 ├── Finetuned Model/ # Folder containing all trained and fine-tuned models  
